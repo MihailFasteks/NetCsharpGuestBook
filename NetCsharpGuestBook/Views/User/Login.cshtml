@@ -1,0 +1,59 @@
+﻿@model NetCsharpGuestBook.Models.Users
+
+@{
+    Layout = null;
+}
+
+@using Microsoft.AspNetCore.Http
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <title>Авторизация</title>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div>
+            @if (Context.Session.GetString("user") == null)
+            {
+                @Html.ValidationSummary(true, "")
+                <div>
+                    @Html.LabelFor(model => model.Name)
+                    <div>
+                        @Html.EditorFor(model => model.Name)
+                        @Html.ValidationMessageFor(model => model.Name, "")
+                    </div>
+                </div>
+
+                <div>
+                    @Html.LabelFor(model => model.Password)
+                    <div>
+                        @Html.PasswordFor(model => model.Password)
+                        @Html.ValidationMessageFor(model => model.Password, "")
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        <input type="submit" value="Войти" />
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <div>
+                        Войти с другой записью:
+                    </div>
+                    @Html.ActionLink("Login", "Login", "User")
+                </div>
+            }
+        </div>
+    }
+</body>
+</html>
