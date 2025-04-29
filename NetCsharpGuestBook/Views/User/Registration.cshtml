@@ -1,40 +1,67 @@
-﻿@model NetCsharpGuestBook.Models.Users
+﻿@model NetCsharpGuestBook.Models.RegisterModel
 
 @{
     ViewData["Title"] = "Registration";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - NetCsharpGuestBook</title>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Registration" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+    <!-- Подключение Bootstrap из CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center">Регистрация</h2>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm border-light">
+                    <div class="card-body">
+                        <form asp-action="Registration" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                            <!-- Логин -->
+                            <div class="mb-3">
+                                <label asp-for="Login" class="form-label">Логин</label>
+                                <input asp-for="Login" class="form-control" placeholder="Введите ваш логин" />
+                                <span asp-validation-for="Login" class="text-danger"></span>
+                            </div>
+
+                            <!-- Пароль -->
+                            <div class="mb-3">
+                                <label asp-for="Password" class="form-label">Пароль</label>
+                                <input asp-for="Password" class="form-control" type="password" placeholder="Введите ваш пароль" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <!-- Подтверждение пароля -->
+                            <div class="mb-3">
+                                <label asp-for="PasswordConfirm" class="form-label">Подтвердите пароль</label>
+                                <input asp-for="PasswordConfirm" class="form-control" type="password" placeholder="Подтвердите пароль" />
+                                <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+                            </div>
+
+                            <!-- Кнопка отправки -->
+                            <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+                        </form>
+                    </div>
+                    <div class="card-footer text-center">
+                        <p class="mb-0">Уже есть аккаунт? <a href="@Url.Action("Login", "User")" class="text-primary">Войти</a></p>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-         
-            <div class="form-group">
-                <input type="submit" value="Registration" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+    <!-- Подключение jQuery и Bootstrap JS из CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

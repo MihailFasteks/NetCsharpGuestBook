@@ -1,59 +1,60 @@
-﻿@model NetCsharpGuestBook.Models.Users
+﻿@model NetCsharpGuestBook.Models.LoginModel
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Login";
 }
 
-@using Microsoft.AspNetCore.Http
-
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width" />
     <meta charset="utf-8" />
-    <title>Авторизация</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - NetCsharpGuestBook</title>
+
+    <!-- Подключение Bootstrap из CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-        <div>
-            @if (Context.Session.GetString("user") == null)
-            {
-                @Html.ValidationSummary(true, "")
-                <div>
-                    @Html.LabelFor(model => model.Name)
-                    <div>
-                        @Html.EditorFor(model => model.Name)
-                        @Html.ValidationMessageFor(model => model.Name, "")
-                    </div>
-                </div>
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center">Вход в систему</h2>
 
-                <div>
-                    @Html.LabelFor(model => model.Password)
-                    <div>
-                        @Html.PasswordFor(model => model.Password)
-                        @Html.ValidationMessageFor(model => model.Password, "")
-                    </div>
-                </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm border-light">
+                    <div class="card-body">
+                        <form asp-action="Login" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                <div>
-                    <div>
-                        <input type="submit" value="Войти" />
+                            <!-- Логин -->
+                            <div class="mb-3">
+                                <label asp-for="Login" class="form-label">Логин</label>
+                                <input asp-for="Login" class="form-control" placeholder="Введите ваш логин" />
+                                <span asp-validation-for="Login" class="text-danger"></span>
+                            </div>
+
+                            <!-- Пароль -->
+                            <div class="mb-3">
+                                <label asp-for="Password" class="form-label">Пароль</label>
+                                <input asp-for="Password" class="form-control" type="password" placeholder="Введите ваш пароль" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <!-- Кнопка отправки -->
+                            <button type="submit" class="btn btn-primary w-100">Войти</button>
+                        </form>
+                    </div>
+                    <div class="card-footer text-center">
+                        <p class="mb-0">Нет аккаунта? <a href="@Url.Action("Registration", "User")" class="text-primary">Зарегистрироваться</a></p>
                     </div>
                 </div>
-            }
-            else
-            {
-                <div>
-                    <div>
-                        Войти с другой записью:
-                    </div>
-                    @Html.ActionLink("Login", "Login", "User")
-                </div>
-            }
+            </div>
         </div>
-    }
+    </div>
+
+    <!-- Подключение jQuery и Bootstrap JS из CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html>

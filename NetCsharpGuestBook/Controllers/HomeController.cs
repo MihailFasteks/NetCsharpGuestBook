@@ -34,7 +34,7 @@ namespace NetCsharpGuestBook.Controllers
             try
             {
                 
-                var username = HttpContext.Session.GetString("user");
+                var username = HttpContext.Session.GetString("Login");
                 Console.WriteLine("Username from session: " + username); 
 
                 if (string.IsNullOrEmpty(username))
@@ -43,8 +43,8 @@ namespace NetCsharpGuestBook.Controllers
                     return RedirectToAction("Login", "User");
                 }
 
-                var dbUser = _context.Users.FirstOrDefault(u => u.Name == username);
-                Console.WriteLine("Found user: " + (dbUser != null ? dbUser.Name : "Not found")); 
+                var dbUser = _context.Users.FirstOrDefault(u => u.Login == username);
+                Console.WriteLine("Found user: " + (dbUser != null ? dbUser.Login : "Not found")); 
 
                 if (dbUser == null)
                 {
@@ -59,7 +59,7 @@ namespace NetCsharpGuestBook.Controllers
                     UserId = dbUser.Id
                 };
 
-                Console.WriteLine($"Adding message: {Text} for user: {dbUser.Name}"); 
+                Console.WriteLine($"Adding message: {Text} for user: {dbUser.Login}"); 
 
                 _context.Add(message);
 

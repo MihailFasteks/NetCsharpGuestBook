@@ -5,64 +5,74 @@
 }
 
 @using Microsoft.AspNetCore.Http
-
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
     <meta charset="utf-8" />
-    <title>Сообщения</title>
-</head>
-<body>
-    <!-- Отображение списка пользователей и их сообщений -->
-    @foreach (var user in Model)
-    {
-        <table class="table">
-            <tr><td><strong>@user.Name</strong></td></tr>
-            @foreach (var message in user.Messages)
-            {
-                <tr>
-                    <td><p>@message.Text</p></td>
-                    <td><p>@message.Date</p></td>
-                </tr>
-            }
-        </table>
-    }
+    <meta name="viewport" content="width=device-width" />
+    <title>Гостевая книга</title>
 
-    <!-- Проверка, если пользователь авторизован -->
-    <div>
-        @if (Context.Session.GetString("user") != null)
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Сообщения пользователей</h2>
+
+        @foreach (var user in Model)
         {
-            <hr />
-            <div class="row">
-                <div class="col-md-4">
-                    <!-- Форма для добавления нового сообщения -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <strong>@user.Login</strong>
+                </div>
+                <ul class="list-group list-group-flush">
+                    @foreach (var message in user.Messages)
+                    {
+                        <li class="list-group-item">
+                            <p class="mb-1">@message.Text</p>
+                            <small class="text-muted">@message.Date</small>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <hr />
+
+        @if (Context.Session.GetString("Login") != null)
+        {
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Добавить сообщение</h5>
                     <form asp-action="AddMessage" method="post">
                         @Html.AntiForgeryToken()
 
-                        <div class="form-group">
-                            <label for="Text" class="control-label">Message</label>
-                            <input type="text" name="Text" class="form-control" required />
+                        <div class="mb-3">
+                            <label for="Text" class="form-label">Сообщение</label>
+                            <input type="text" name="Text" class="form-control" id="Text" required />
+                            <div class="form-text">Оставьте что-нибудь хорошее 😊</div>
                         </div>
 
-                        <div class="form-group">
-                            <input type="submit" value="Add Message" class="btn btn-primary" />
-                        </div>
+                        <button type="submit" class="btn btn-primary">Отправить</button>
                     </form>
                 </div>
             </div>
         }
         else
         {
-            <!-- Кнопки для входа и регистрации, если пользователь не авторизован -->
-            <div>
+            <div class="mt-4 text-center">
+                <p>Вы не вошли в систему</p>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Login", "User")'">Login</button>
-                    <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("Registration", "User")'">Register</button>
-                    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Logout", "User")'">Login as Guest</button>
+                    <a href="@Url.Action("Login", "User")" class="btn btn-primary">Войти</a>
+                    <a href="@Url.Action("Registration", "User")" class="btn btn-secondary">Регистрация</a>
+                    <a href="@Url.Action("Logout", "User")" class="btn btn-success">Войти как гость</a>
                 </div>
             </div>
         }
-        
+    </div>
+
+    <!-- Bootstrap JS (необязательно, если не используете JS-компоненты Bootstrap) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
